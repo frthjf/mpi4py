@@ -17,7 +17,7 @@ oriented interface which closely follows MPI-2 C++ bindings.
 
 """
 
-__version__ = '4.0.0.dev0'
+__version__ = '3.9.9.dev0'
 __author__ = 'Lisandro Dalcin'
 __credits__ = 'MPI Forum, MPICH Team, Open MPI Team'
 
@@ -84,6 +84,13 @@ class Rc:
 rc = Rc()
 __import__('sys').modules[__name__ + '.rc'] = rc
 
+# HACK
+import os
+if os.environ.get('HYDRA_LAUNCHER_EXTRA_ARGS', None) == "--external-launcher":
+    # script was invoked without ibrun so we need to 
+    #  disable automatic initialization
+    rc.initialize = False
+# HACK
 
 def get_include():
     """Return the directory in the package that contains header files.
